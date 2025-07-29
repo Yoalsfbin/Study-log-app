@@ -1,4 +1,4 @@
-# Logs
+# === LOG FILES ===
 logs
 *.log
 npm-debug.log*
@@ -7,19 +7,26 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# === NODE ===
+node_modules/
+dist/
+dist-ssr/
 *.local
-.env
 
-# Editor directories and files
+# === ENV FILES ===
+.env
+.env.*     
+
+# === EDITORS ===
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# === VITE OUTPUT ===
+coverage/
