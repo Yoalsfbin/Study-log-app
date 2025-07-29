@@ -14,3 +14,7 @@ export const createStudyLog = async (data: {
 }): Promise<void> => {
   await apiClient.post("/study-logs", data);
 };
+
+export const deleteStudyLog = async (id: number): Promise<void> => {
+  await apiClient.delete(`/study-logs/${id}`);
+};

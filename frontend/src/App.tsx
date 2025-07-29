@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getStudyLogs } from "./services/studyLogService";
 import { StudyLogForm } from "./components/StudyLogForm";
 import type { StudyLog } from "./types/studyLog";
+import { StudyLogItem } from "./components/StudyLogItem";
 
 function App() {
   const [logs, setLogs] = useState<StudyLog[]>([]);
@@ -25,21 +26,7 @@ function App() {
         <StudyLogForm onCreated={fetchLogs} />
 
         {logs.map((log) => (
-          <div
-            key={log.id}
-            className="p-6 bg-white rounded-lg shadow space-y-2 border border-gray-200"
-          >
-            <p className="text-sm text-gray-500">
-              {new Date(log.studied_on).toLocaleDateString("ja-JP", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                weekday: "short",
-              })}
-            </p>
-            <h3 className="text-xl font-semibold text-gray-800">{log.title}</h3>
-            <p className="text-gray-700 whitespace-pre-wrap">{log.content}</p>
-          </div>
+          <StudyLogItem key={log.id} log={log} onDeleted={fetchLogs} />
         ))}
       </div>
     </div>
