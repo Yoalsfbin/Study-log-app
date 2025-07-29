@@ -1,11 +1,9 @@
-import axios from "axios";
+// src/services/studyLogService.ts
+import { apiClient } from "../lib/axios";
 import type { StudyLog } from "../types/studyLog";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const API_URL = `${API_BASE_URL}/study-logs`;
-
 export const getStudyLogs = async (): Promise<StudyLog[]> => {
-  const response = await axios.get<StudyLog[]>(API_URL);
+  const response = await apiClient.get<StudyLog[]>("/study-logs");
   return response.data;
 };
 
@@ -14,5 +12,5 @@ export const createStudyLog = async (data: {
   content: string;
   studied_on: string;
 }): Promise<void> => {
-  await axios.post(API_URL, data);
+  await apiClient.post("/study-logs", data);
 };
