@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStudyLogRequest;
+use App\Http\Requests\UpdateStudyLogRequest;
 use App\Services\StudyLogService;
 use Illuminate\Http\JsonResponse;
 
@@ -27,6 +28,17 @@ class StudyLogController extends Controller
     {
         $log = $this->studyLogService->create($request->validated());
         return response()->json($log, 201);
+    }
+
+    public function update(UpdateStudyLogRequest $request, int $id): JsonResponse
+    {
+        $log = $this->studyLogService->update($id, $request->validated());
+
+        if (!$log) {
+            return response()->json(['message' => 'Forbidden or not found'], 403);
+        }
+
+        return response()->json($log);
     }
 
     public function destroy(int $id): JsonResponse

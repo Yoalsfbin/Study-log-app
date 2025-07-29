@@ -23,6 +23,13 @@ class StudyLogService
         return $this->repository->createForUser(1, $data);
     }
 
+    public function update(int $id, array $data): bool
+    {
+        $log = $this->repository->findById($id);
+
+        return $this->repository->update($data);
+    }
+
     public function delete(int $id): bool
     {
         $log = $this->repository->findById($id);
