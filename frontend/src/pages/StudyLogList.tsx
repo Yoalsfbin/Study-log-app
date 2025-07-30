@@ -29,7 +29,12 @@ export const StudyLogList = () => {
       </div>
       {logs.length > 0 ? (
         logs.map((log) => (
-          <StudyLogItem key={log.id} log={log} onDeleted={fetchLogs} />
+          <StudyLogItem
+            key={log.id}
+            log={log}
+            onDeleted={fetchLogs}
+            onUpdated={fetchLogs}
+          />
         ))
       ) : (
         <p className="text-gray-500">記録はまだありません。</p>

@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { StudyLogList } from "./pages/StudyLogList";
-import { StudyLogCreate } from "./pages/StudyLogCreate";
+import { CreateStudyLog } from "./pages/CreateStudyLog";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<StudyLogList />} />
-        <Route path="/new" element={<StudyLogCreate />} />
+        <Route path="/new" element={<CreateStudyLog />} />
       </Routes>
     </Router>
   );

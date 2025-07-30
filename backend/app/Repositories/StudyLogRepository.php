@@ -21,9 +21,9 @@ class StudyLogRepository
         return StudyLog::find($id);
     }
 
-    public function update(array $data) : bool
+    public function update(StudyLog $log, array $data): bool
     {
-        return  StudyLog::update($data);
+        return $log->update($data);
     }
 
     public function delete(StudyLog $log): bool

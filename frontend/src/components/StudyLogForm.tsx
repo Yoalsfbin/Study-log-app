@@ -1,15 +1,25 @@
-import { useState } from "react";
-import { createStudyLog } from "../services/studyLogService";
+import { useState, useEffect } from "react";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import type { StudyLog } from "../types/studyLog";
+import { createStudyLog, updateStudyLog } from "../services/studyLogService";
 
 type Props = {
-  onCreated: () => void;
+  onSuccess: () => void;
+  initialData?: StudyLog;
 };
 
-export const StudyLogForm = ({ onCreated }: Props) => {
+export const StudyLogForm = ({ onSuccess, initialData }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [studiedOn, setStudiedOn] = useState("");
+
+  useEffect(() => {
+    if (initialData) {
+      setTitle(initialData.title ?? "");
+      setContent(initialData.content ?? "");
+      setStudiedOn(initialData.studied_on ?? "");
+    }
+  }, [initialData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,13 +27,26 @@ export const StudyLogForm = ({ onCreated }: Props) => {
     if (!title || !content || !studiedOn) return;
 
     try {
-      await createStudyLog({ title, content, studied_on: studiedOn });
+      if (initialData) {
+        // 編集の場合
+        await updateStudyLog(initialData.id, {
+          title,
+          content,
+          studied_on: studiedOn,
+        });
+      } else {
+        // 新規作成の場合
+        await createStudyLog({ title, content, studied_on: studiedOn });
+      }
+
+      // 成功後の初期化と通知
       setTitle("");
       setContent("");
       setStudiedOn("");
-      onCreated();
+      onSuccess();
     } catch (error) {
-      console.error("登録に失敗しました", error);
+      console.error("送信に失敗しました", error);
+      alert("送信に失敗しました");
     }
   };
 
@@ -32,15 +55,10 @@ export const StudyLogForm = ({ onCreated }: Props) => {
       onSubmit={handleSubmit}
       className="mb-10 p-8 bg-white/80 backdrop-blur-md border border-gray-200 rounded-2xl shadow-2xl space-y-6"
     >
-      <h2 className="text-2xl font-bold text-gray-800 text-center">
-        ✍️ 学習記録の追加
-      </h2>
-
       <div>
         <label className="block text-sm text-gray-600 mb-1">タイトル</label>
         <input
           type="text"
-          placeholder="例）ReactのHooksについて"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
@@ -51,7 +69,6 @@ export const StudyLogForm = ({ onCreated }: Props) => {
       <div>
         <label className="block text-sm text-gray-600 mb-1">内容</label>
         <textarea
-          placeholder="学んだこと、気づき、課題などを書きましょう"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="w-full h-28 rounded-lg border border-gray-300 p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
@@ -76,7 +93,7 @@ export const StudyLogForm = ({ onCreated }: Props) => {
           className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow hover:shadow-md transition"
         >
           <PlusIcon className="w-5 h-5" />
-          記録する
+          {initialData ? "更新する" : "記録する"}
         </button>
       </div>
     </form>

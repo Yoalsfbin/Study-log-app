@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\StudyLogRepository;
+use \App\Models\StudyLog;
 
 class StudyLogService
 {
@@ -18,16 +19,21 @@ class StudyLogService
         return $this->repository->getByUser(1); // 認証前なので仮ユーザーID
     }
 
-    public function create(array $data): \App\Models\StudyLog
+    public function create(array $data): StudyLog
     {
         return $this->repository->createForUser(1, $data);
     }
 
-    public function update(int $id, array $data): bool
+    public function update(int $id, array $data): ?StudyLog
     {
         $log = $this->repository->findById($id);
 
-        return $this->repository->update($data);
+        if (!$log) {
+            return null;
+        }
+
+        $this->repository->update($log, $data);
+        return $log;
     }
 
     public function delete(int $id): bool

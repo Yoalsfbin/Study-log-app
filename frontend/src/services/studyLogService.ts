@@ -1,4 +1,3 @@
-// src/services/studyLogService.ts
 import { apiClient } from "../lib/axios";
 import type { StudyLog } from "../types/studyLog";
 
@@ -13,6 +12,17 @@ export const createStudyLog = async (data: {
   studied_on: string;
 }): Promise<void> => {
   await apiClient.post("/study-logs", data);
+};
+
+export const updateStudyLog = async (
+  id: number,
+  data: {
+    title: string;
+    content: string;
+    studied_on: string;
+  }
+): Promise<void> => {
+  await apiClient.put(`/study-logs/${id}`, data);
 };
 
 export const deleteStudyLog = async (id: number): Promise<void> => {
