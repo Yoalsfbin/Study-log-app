@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getStudyLogs } from "../services/studyLogService";
 import { StudyLogItem } from "../components/StudyLogItem";
-import { Link } from "react-router-dom";
 import type { StudyLog } from "../types/studyLog";
 import { CreateStudyLogModal } from "../components/CreateStudyLogModal";
 
