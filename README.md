@@ -1,5 +1,6 @@
 # learning-log-app
 学習記録を管理するアプリケーションです。（開発中）
+
 バックエンドに Laravel、フロントエンドに React（TypeScript + Vite）を使用し、PostgreSQL を DB としています。
 
 ## 🔧 使用技術
