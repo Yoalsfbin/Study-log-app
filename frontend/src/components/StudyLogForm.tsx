@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import type { StudyLog } from "../types/studyLog";
 import { createStudyLog, updateStudyLog } from "../services/studyLogService";
+import { toast } from "react-toastify";
 
 type Props = {
   onSuccess: () => void;
@@ -34,9 +35,11 @@ export const StudyLogForm = ({ onSuccess, initialData }: Props) => {
           content,
           studied_on: studiedOn,
         });
+        toast.success("学習記録を更新しました！");
       } else {
         // 新規作成の場合
         await createStudyLog({ title, content, studied_on: studiedOn });
+        toast.success("学習記録を登録しました！");
       }
 
       // 成功後の初期化と通知
@@ -47,6 +50,7 @@ export const StudyLogForm = ({ onSuccess, initialData }: Props) => {
     } catch (error) {
       console.error("送信に失敗しました", error);
       alert("送信に失敗しました");
+      toast.error("エラーが発生しました。再度お試しください。");
     }
   };
 

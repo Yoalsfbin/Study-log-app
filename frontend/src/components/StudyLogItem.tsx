@@ -3,6 +3,7 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 import type { StudyLog } from "../types/studyLog";
 import { deleteStudyLog } from "../services/studyLogService";
 import { EditStudyLogModal } from "./EditStudyLogModal";
+import { toast } from "react-toastify";
 
 type Props = {
   log: StudyLog;
@@ -19,6 +20,7 @@ export const StudyLogItem = ({ log, onDeleted, onUpdated }: Props) => {
     try {
       await deleteStudyLog(log.id);
       onDeleted();
+      toast.success("削除に成功しました！");
     } catch (error) {
       console.error("削除に失敗しました", error);
     }
@@ -32,15 +34,6 @@ export const StudyLogItem = ({ log, onDeleted, onUpdated }: Props) => {
         {log.studied_on}（{log.category ?? "未分類"}）
       </p>
 
-      {/* 削除ボタン */}
-      <button
-        onClick={handleDelete}
-        className="absolute top-2 right-2 text-gray-400 hover:text-red-600 transition"
-        title="削除"
-      >
-        <FaTrash size={20} />
-      </button>
-
       {/* 編集ボタン */}
       <button
         onClick={() => setEditOpen(true)}
@@ -48,6 +41,15 @@ export const StudyLogItem = ({ log, onDeleted, onUpdated }: Props) => {
         title="編集"
       >
         <FaEdit size={20} />
+      </button>
+
+      {/* 削除ボタン */}
+      <button
+        onClick={handleDelete}
+        className="absolute top-2 right-2 text-gray-400 hover:text-red-600 transition"
+        title="削除"
+      >
+        <FaTrash size={20} />
       </button>
 
       {/* 編集モーダル */}
