@@ -79,7 +79,7 @@ export const EditStudyLogModal = ({
                 id={titleId}
                 className="text-2xl font-bold text-gray-800 mb-6 text-center"
               >
-                学習記録の編集
+                🖊学習記録の編集
               </h2>
 
               <StudyLogForm

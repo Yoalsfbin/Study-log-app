@@ -3,6 +3,7 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import type { StudyLog } from "../types/studyLog";
 import { createStudyLog, updateStudyLog } from "../services/studyLogService";
 import { toast } from "react-toastify";
+import { PrimaryButton } from "../components/ui/PrimaryButton";
 
 type Props = {
   onSuccess: () => void;
@@ -92,13 +93,9 @@ export const StudyLogForm = ({ onSuccess, initialData }: Props) => {
       </div>
 
       <div className="text-center">
-        <button
-          type="submit"
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow hover:shadow-md transition"
-        >
-          <PlusIcon className="w-5 h-5" />
+        <PrimaryButton type="submit" icon={<PlusIcon className="w-5 h-5" />}>
           {initialData ? "更新する" : "記録する"}
-        </button>
+        </PrimaryButton>
       </div>
     </form>
   );

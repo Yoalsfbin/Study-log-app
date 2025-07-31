@@ -36,7 +36,7 @@ export const CreateStudyLogModal = ({ isOpen, onClose, onCreated }: Props) => {
               <FaTimes size={20} />
             </button>
             <h2 id={titleId} className="text-2xl font-bold text-center mb-6">
-              学習記録を追加
+              🖊学習記録を追加
             </h2>
 
             <StudyLogForm
