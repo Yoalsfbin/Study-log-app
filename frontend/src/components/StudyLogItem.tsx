@@ -29,11 +29,12 @@ export const StudyLogItem = ({ log, onDeleted, onUpdated }: Props) => {
   return (
     <div
       className="
-        p-6 rounded-2xl border border-white/40
-        shadow-lg hover:shadow-2xl
-        transition-all duration-300 ease-in-out
+        p-6 rounded-2xl 
+        border border-white/40 
+        bg-white/70 backdrop-blur-md 
+        shadow-lg hover:shadow-2xl 
+        transition-all duration-300 ease-in-out 
         transform hover:-translate-y-1
-        bg-white/70 backdrop-blur-md
       "
     >
       <h3 className="text-xl font-semibold">{log.title}</h3>
