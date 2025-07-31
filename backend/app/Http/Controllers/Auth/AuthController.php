@@ -6,12 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
+        Log::info('■□');
         $credentials = $request->validated();
+        Log::info( $credentials);
+        Log::info('■□');
+        Log::info('■□');
 
         if (!Auth::attempt($credentials)) {
             return response()->json(['message' => '認証に失敗しました'], 401);

@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes, FaSignOutAlt } from "react-icons/fa";
+import { logout } from "../services/authService";
+import { toast } from "react-toastify";
 
 type Props = {
   children: ReactNode;
@@ -10,6 +12,7 @@ type Props = {
 export const Layout = ({ children }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const navItems = [
     { to: "/index", label: "学習記録" },
@@ -19,26 +22,45 @@ export const Layout = ({ children }: Props) => {
     // { to: "/contact", label: "問い合わせ" },
   ];
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("ログアウトしました");
+      navigate("/login");
+    } catch (error) {
+      toast.error("ログアウトに失敗しました");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="h-screen flex overflow-hidden bg-gradient-to-br from-blue-100 to-purple-200">
       {/* サイドメニュー（PC） */}
-      <aside className="hidden md:flex flex-col w-64 h-full bg-gradient-to-b from-white/80 to-blue-50 backdrop-blur-md border-r border-gray-200 p-4">
-        <div className="text-xl font-bold text-purple-700 mb-6 text-center">
-          📚 StudyLog
+      <aside className="hidden md:flex flex-col justify-between w-64 h-full bg-gradient-to-b from-white/80 to-blue-50 backdrop-blur-md border-r border-gray-200 p-4">
+        <div>
+          <div className="text-xl font-bold text-purple-700 mb-6 text-center">
+            📚 StudyLog
+          </div>
+          <nav className="space-y-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={`block px-4 py-2 rounded hover:bg-blue-100 transition ${
+                  pathname === item.to ? "bg-blue-100 font-semibold" : ""
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
         </div>
-        <nav className="space-y-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={`block px-4 py-2 rounded hover:bg-blue-100 transition ${
-                pathname === item.to ? "bg-blue-100 font-semibold" : ""
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <button
+          onClick={handleLogout}
+          className="mt-4 w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded flex items-center justify-center gap-2"
+        >
+          <FaSignOutAlt /> ログアウト
+        </button>
       </aside>
 
       {/* モバイルメニュー（開閉） */}
@@ -71,6 +93,15 @@ export const Layout = ({ children }: Props) => {
                 </Link>
               ))}
             </nav>
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsOpen(false);
+              }}
+              className="mt-6 w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded flex items-center justify-center gap-2"
+            >
+              <FaSignOutAlt /> ログアウト
+            </button>
           </aside>
         </div>
       )}
