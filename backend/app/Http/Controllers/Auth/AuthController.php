@@ -12,20 +12,7 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
-        Log::info('■□');
         $credentials = $request->validated();
-        Log::info( $credentials);
-        Log::info('■□');
-        Log::info('■□');
 
         if (!Auth::attempt($credentials)) {
             return response()->json(['message' => '認証に失敗しました'], 401);

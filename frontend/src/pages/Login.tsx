@@ -13,9 +13,7 @@ export const Login = () => {
     e.preventDefault();
 
     try {
-      console.log("ログイン関数呼び出し前");
       await login(email, password);
-      console.log("ログイン関数呼び出し後");
       toast.success("ログインに成功しました！");
       navigate("/index"); // ログイン後のリダイレクト
     } catch (error) {
