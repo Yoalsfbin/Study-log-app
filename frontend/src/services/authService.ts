@@ -3,42 +3,34 @@ import { apiClient } from "../lib/axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-axios.defaults.withCredentials = true;
+// CSRF用：生のaxiosを使用（apiClient未使用）
+export const getCsrfToken = async () => {
+  await axios.get(`${API_BASE_URL}/sanctum/csrf-cookie`, {
+    withCredentials: true,
+  });
+};
 
-apiClient.interceptors.request.use((config) => {
-  const token = getCookie("XSRF-TOKEN");
-  if (token) {
-    config.headers["X-XSRF-TOKEN"] = decodeURIComponent(token);
-  }
-  return config;
-});
-
-// クッキーからXSRFトークンを取得
-function getCookie(name: string): string | null {
+// クッキーからXSRFトークン取得
+const getCookie = (name: string): string | null => {
   const match = document.cookie.match(
     new RegExp("(^|;\\s*)" + name + "=([^;]*)")
   );
-  return match ? match[2] : null;
-}
+  return match ? decodeURIComponent(match[2]) : null;
+};
 
 /**
  * ログイン処理
  */
 export const login = async (email: string, password: string) => {
-  // CSRF クッキーの取得
-  await axios.get(`${API_BASE_URL}/sanctum/csrf-cookie`);
+  await getCsrfToken();
+  const xsrfToken = getCookie("XSRF-TOKEN");
 
-  // ログイン API へ POST
-  await axios.post(
-    `${API_BASE_URL}/login`,
+  return apiClient.post(
+    "/login",
+    { email, password },
     {
-      email,
-      password,
-    },
-    {
-      withCredentials: true,
       headers: {
-        "X-XSRF-TOKEN": decodeURIComponent(getCookie("XSRF-TOKEN") || ""),
+        "X-XSRF-TOKEN": xsrfToken || "",
       },
     }
   );
@@ -48,17 +40,14 @@ export const login = async (email: string, password: string) => {
  * ログアウト処理
  */
 export const logout = async () => {
-  await axios.post(
-    `${API_BASE_URL}/logout`,
+  const xsrfToken = getCookie("XSRF-TOKEN");
+
+  return apiClient.post(
+    "/logout",
     {},
     {
       headers: {
-        "X-XSRF-TOKEN": decodeURIComponent(
-          document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("XSRF-TOKEN="))
-            ?.split("=")[1] || ""
-        ),
+        "X-XSRF-TOKEN": xsrfToken || "",
       },
     }
   );
@@ -68,7 +57,7 @@ export const logout = async () => {
  * ログイン中のユーザー取得
  */
 export const getCurrentUser = async () => {
-  return axios.get(`${API_BASE_URL}/me`, {
+  return apiClient.get("/me", {
     withCredentials: true,
   });
 };
