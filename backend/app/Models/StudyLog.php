@@ -13,12 +13,16 @@ class StudyLog extends Model
         'user_id',
         'title',
         'content',
-        'category',
         'studied_on',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }
