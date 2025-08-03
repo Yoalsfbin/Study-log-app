@@ -14,36 +14,24 @@ class StudyLogService
         $this->repository = $repository;
     }
 
-    public function getAllForUser(): \Illuminate\Support\Collection
+    public function getAllForUser(int $userId): \Illuminate\Support\Collection
     {
-        return $this->repository->getByUser(1); // 認証前なので仮ユーザーID
+        return $this->repository->getByUser($userId);
     }
 
-    public function create(array $data): StudyLog
+    public function create(int $userId, array $data): StudyLog
     {
-        return $this->repository->createForUser(1, $data);
+        return $this->repository->createForUser($userId, $data);
     }
 
-    public function update(int $id, array $data): ?StudyLog
+    public function update(StudyLog $log, array $data): StudyLog
     {
-        $log = $this->repository->findById($id);
-
-        if (!$log) {
-            return null;
-        }
-
         $this->repository->update($log, $data);
         return $log;
     }
 
-    public function delete(int $id): bool
+    public function delete(StudyLog $log): bool
     {
-        $log = $this->repository->findById($id);
-
-        if (!$log || $log->user_id !== 1) {
-            return false;
-        }
-
         return $this->repository->delete($log);
     }
 }

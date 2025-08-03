@@ -7,6 +7,8 @@ use App\Http\Requests\StoreStudyLogRequest;
 use App\Http\Requests\UpdateStudyLogRequest;
 use App\Services\StudyLogService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Models\StudyLog;
 
 class StudyLogController extends Controller
 {
@@ -16,38 +18,40 @@ class StudyLogController extends Controller
     public function __construct(StudyLogService $studyLogService)
     {
         $this->studyLogService = $studyLogService;
+        $this->authorizeResource(StudyLog::class, 'study_log');
     }
 
     public function index(): JsonResponse
     {
-        $logs = $this->studyLogService->getAllForUser();
+        $userId = Auth::id();
+        $logs = $this->studyLogService->getAllForUser($userId);
+
         return response()->json($logs);
     }
 
     public function store(StoreStudyLogRequest $request): JsonResponse
     {
-        $log = $this->studyLogService->create($request->validated());
+        $userId = Auth::id();
+        $log = $this->studyLogService->create(
+            $userId,
+            $request->validated()
+        );
+
         return response()->json($log, 201);
     }
 
-    public function update(UpdateStudyLogRequest $request, int $id): JsonResponse
+    public function update(UpdateStudyLogRequest $request, StudyLog $study_log): JsonResponse
     {
-        $log = $this->studyLogService->update($id, $request->validated());
-
-        if (!$log) {
-            return response()->json(['message' => 'Forbidden or not found'], 403);
-        }
+        $this->authorize('update', $study_log);
+        $log = $this->studyLogService->update($study_log, $request->validated());
 
         return response()->json($log);
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(StudyLog $study_log): JsonResponse
     {
-        $deleted = $this->studyLogService->delete($id);
-
-        if (!$deleted) {
-            return response()->json(['message' => 'Forbidden or not found'], 403);
-        }
+        $this->authorize('delete', $study_log);
+        $deleted = $this->studyLogService->delete($study_log);
 
         return response()->json(['message' => 'Deleted']);
     }

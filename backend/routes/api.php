@@ -24,8 +24,8 @@ Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::prefix('study-logs')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [StudyLogController::class, 'index']);
     Route::post('/', [StudyLogController::class, 'store']);
-    Route::put('/{id}', [StudyLogController::class, 'update']);
-    Route::delete('/{id}', [StudyLogController::class, 'destroy']);
+    Route::put('/{study_log}', [StudyLogController::class, 'update']);
+    Route::delete('/{study_log}', [StudyLogController::class, 'destroy']);
 });
 
 

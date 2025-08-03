@@ -11,7 +11,7 @@ export const getCsrfToken = async () => {
 };
 
 // クッキーからXSRFトークン取得
-const getCookie = (name: string): string | null => {
+export const getCookie = (name: string): string | null => {
   const match = document.cookie.match(
     new RegExp("(^|;\\s*)" + name + "=([^;]*)")
   );
