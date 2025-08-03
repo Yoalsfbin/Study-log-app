@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes, FaSignOutAlt } from "react-icons/fa";
 import { logout } from "../services/authService";
 import { toast } from "react-toastify";
+import { useAuth } from "../hooks/useAuth";
 
 type Props = {
   children: ReactNode;
@@ -13,40 +14,39 @@ export const Layout = ({ children }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
 
-  const navItems = [
-    { to: "/index", label: "学習記録" },
-    // { to: "/calendar", label: "カレンダー" },
-    // { to: "/stats", label: "グラフ" },
-    // { to: "/settings", label: "設定" },
-    // { to: "/contact", label: "問い合わせ" },
-  ];
+  const navItems = [{ to: "/index", label: "学習記録" }];
 
   const handleLogout = async () => {
     try {
       await logout();
       toast.success("ログアウトしました");
       navigate("/login");
-    } catch (error) {
+    } catch {
       toast.error("ログアウトに失敗しました");
-      console.error(error);
     }
   };
+
+  
+
+  if (loading) return null; // ローディング中は描画を待つ
+  if (!user) return <>{children}</>; // ログイン前はサイドバーなし
 
   return (
     <div className="h-screen flex overflow-hidden bg-gradient-to-br from-blue-100 to-purple-200">
       {/* サイドメニュー（PC） */}
-      <aside className="hidden md:flex flex-col justify-between w-64 h-full bg-gradient-to-b from-white/80 to-blue-50 backdrop-blur-md border-r border-gray-200 p-4">
+      <aside className="hidden md:flex flex-col justify-between w-64 bg-white/80 border-r p-4">
         <div>
-          <div className="text-xl font-bold text-purple-700 mb-6 text-center">
+          <h1 className="text-xl font-bold text-purple-700 mb-6 text-center">
             📚 StudyLog
-          </div>
+          </h1>
           <nav className="space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className={`block px-4 py-2 rounded hover:bg-blue-100 transition ${
+                className={`block px-4 py-2 rounded ${
                   pathname === item.to ? "bg-blue-100 font-semibold" : ""
                 }`}
               >
@@ -57,37 +57,36 @@ export const Layout = ({ children }: Props) => {
         </div>
         <button
           onClick={handleLogout}
-          className="mt-4 w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded flex items-center justify-center gap-2"
+          className="mt-4 px-4 py-2 bg-red-500 text-white rounded flex justify-center items-center gap-2 hover:bg-red-600"
         >
-          <FaSignOutAlt /> ログアウト
+          <FaSignOutAlt />
+          ログアウト
         </button>
       </aside>
 
-      {/* モバイルメニュー（開閉） */}
+      {/* モバイルメニュー */}
       <div className="md:hidden fixed top-4 left-4 z-50">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-gray-700 bg-white p-2 rounded shadow"
+          className="bg-white p-2 rounded shadow"
         >
-          {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+          {isOpen ? <FaTimes /> : <FaBars />}
         </button>
       </div>
 
       {isOpen && (
         <div className="md:hidden fixed inset-0 bg-black/30 z-40">
           <aside className="w-64 h-full bg-white p-4">
-            <div className="text-xl font-bold mb-6 text-center">
-              📚 StudyLog
-            </div>
+            <h1 className="text-xl font-bold mb-6 text-center">📚 StudyLog</h1>
             <nav className="space-y-2">
               {navItems.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
-                  className={`block px-4 py-2 rounded hover:bg-blue-100 transition ${
+                  onClick={() => setIsOpen(false)}
+                  className={`block px-4 py-2 rounded ${
                     pathname === item.to ? "bg-blue-100 font-semibold" : ""
                   }`}
-                  onClick={() => setIsOpen(false)}
                 >
                   {item.label}
                 </Link>
@@ -98,15 +97,16 @@ export const Layout = ({ children }: Props) => {
                 handleLogout();
                 setIsOpen(false);
               }}
-              className="mt-6 w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded flex items-center justify-center gap-2"
+              className="mt-6 w-full px-4 py-2 bg-red-500 text-white rounded flex items-center justify-center gap-2 hover:bg-red-600"
             >
-              <FaSignOutAlt /> ログアウト
+              <FaSignOutAlt />
+              ログアウト
             </button>
           </aside>
         </div>
       )}
 
-      {/* メインコンテンツ */}
+      {/* メイン */}
       <main className="flex-1 overflow-y-auto p-6">{children}</main>
     </div>
   );

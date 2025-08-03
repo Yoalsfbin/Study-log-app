@@ -65,8 +65,10 @@ export const logout = async () => {
 };
 
 /**
- * ログイン中のユーザー取得（オプション）
+ * ログイン中のユーザー取得
  */
 export const getCurrentUser = async () => {
-  return axios.get(`${API_BASE_URL}/api/user`);
+  return axios.get(`${API_BASE_URL}/me`, {
+    withCredentials: true,
+  });
 };
