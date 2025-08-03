@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { PlusIcon } from "@heroicons/react/24/solid";
 import type { StudyLog } from "../types/studyLog";
 import { createStudyLog, updateStudyLog } from "../services/studyLogService";
 import { toast } from "react-toastify";
 import { PrimaryButton } from "../components/ui/PrimaryButton";
+import { FaPlus } from "react-icons/fa";
 
 type Props = {
   onSuccess: () => void;
@@ -93,8 +93,8 @@ export const StudyLogForm = ({ onSuccess, initialData }: Props) => {
       </div>
 
       <div className="text-center">
-        <PrimaryButton type="submit" icon={<PlusIcon className="w-5 h-5" />}>
-          {initialData ? "更新する" : "記録する"}
+        <PrimaryButton type="submit" icon={<FaPlus />}>
+          {initialData ? "更新する" : "登録する"}
         </PrimaryButton>
       </div>
     </form>

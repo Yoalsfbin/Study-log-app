@@ -4,6 +4,7 @@ import { StudyLogItem } from "../components/StudyLogItem";
 import type { StudyLog } from "../types/studyLog";
 import { CreateStudyLogModal } from "../components/CreateStudyLogModal";
 import { PrimaryButton } from "../components/ui/PrimaryButton";
+import { FaPlus } from "react-icons/fa";
 
 export const StudyLogList = () => {
   const [logs, setLogs] = useState<StudyLog[]>([]);
@@ -24,7 +25,8 @@ export const StudyLogList = () => {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">学習記録一覧</h1>
           <PrimaryButton onClick={() => setIsModalOpen(true)}>
-            新規登録
+            <FaPlus />
+            学習記録を登録する
           </PrimaryButton>
         </div>
         {logs.length > 0 ? (
