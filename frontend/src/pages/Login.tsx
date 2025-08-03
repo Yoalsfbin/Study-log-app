@@ -5,6 +5,7 @@ import { PrimaryButton } from "../components/ui/PrimaryButton";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "../hooks/useAuth";
 
 const schema = z.object({
   email: z.string().email({ message: "有効なメールアドレスを入力してください" }),
@@ -24,9 +25,12 @@ export const Login = () => {
     resolver: zodResolver(schema),
   });
 
+  const { refreshUser } = useAuth();
+
   const onSubmit = async (data: FormData) => {
     try {
       await login(data.email, data.password);
+      await refreshUser();
       toast.success("ログインに成功しました！");
       navigate("/index");
     } catch (error) {
