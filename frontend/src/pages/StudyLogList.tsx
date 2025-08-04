@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getStudyLogs } from "../services/studyLogService";
-import { StudyLogItem } from "../components/StudyLogItem";
+import { StudyLogItem } from "../components/StudyLog/StudyLogItem";
 import type { StudyLog } from "../types/studyLog";
-import { CreateStudyLogModal } from "../components/CreateStudyLogModal";
+import { CreateStudyLogModal } from "../components/StudyLog/CreateStudyLogModal";
 import { PrimaryButton } from "../components/ui/PrimaryButton";
 import { FaPlus } from "react-icons/fa";
 

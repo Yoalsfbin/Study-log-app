@@ -1,5 +1,5 @@
 import React from "react";
-import type { StudyLog } from "../types/studyLog";
+import type { StudyLog } from "../../types/studyLog";
 
 type Props = {
   log: StudyLog;

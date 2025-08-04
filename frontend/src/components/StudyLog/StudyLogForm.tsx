@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import type { StudyLog } from "../types/studyLog";
-import { createStudyLog, updateStudyLog } from "../services/studyLogService";
+import type { StudyLog } from "../../types/studyLog";
+import { createStudyLog, updateStudyLog } from "../../services/studyLogService";
 import { toast } from "react-toastify";
-import { PrimaryButton } from "../components/ui/PrimaryButton";
+import { PrimaryButton } from "../ui/PrimaryButton";
 import { FaPlus } from "react-icons/fa";
 
 type Props = {
@@ -10,10 +10,12 @@ type Props = {
   initialData?: StudyLog;
 };
 
+const todayString = new Date().toISOString().split("T")[0];
+
 export const StudyLogForm = ({ onSuccess, initialData }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [studiedOn, setStudiedOn] = useState("");
+  const [studiedOn, setStudiedOn] = useState(todayString);
 
   useEffect(() => {
     if (initialData) {

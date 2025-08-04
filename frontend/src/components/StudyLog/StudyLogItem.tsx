@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import type { StudyLog } from "../types/studyLog";
-import { deleteStudyLog } from "../services/studyLogService";
+import type { StudyLog } from "../../types/studyLog";
+import { deleteStudyLog } from "../../services/studyLogService";
 import { EditStudyLogModal } from "./EditStudyLogModal";
 import { toast } from "react-toastify";
 
