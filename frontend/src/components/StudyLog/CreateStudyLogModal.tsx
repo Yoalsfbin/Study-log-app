@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useId } from "react";
-import { StudyLogForm } from "./StudyLogForm";
+import { StudyLogForm } from "../StudyLog/StudyLogForm";
 import { FaTimes } from "react-icons/fa";
 
 type Props = {
