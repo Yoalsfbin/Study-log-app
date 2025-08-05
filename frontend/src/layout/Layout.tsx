@@ -5,6 +5,7 @@ import { FaBars, FaTimes, FaSignOutAlt } from "react-icons/fa";
 import { logout } from "../services/authService";
 import { toast } from "react-toastify";
 import { useAuth } from "../hooks/useAuth";
+// import { Label } from "@headlessui/react";
 
 type Props = {
   children: ReactNode;
@@ -16,7 +17,10 @@ export const Layout = ({ children }: Props) => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
-  const navItems = [{ to: "/index", label: "学習記録" }];
+  const navItems = [
+    { to: "/index", label: "学習記録" },
+    { to: "/tags", label: "タグ管理"}
+  ];
 
   const handleLogout = async () => {
     try {

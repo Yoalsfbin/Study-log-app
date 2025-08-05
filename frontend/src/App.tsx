@@ -6,6 +6,7 @@ import { Layout } from "./layout/Layout";
 import { useAuth } from "./hooks/useAuth";
 import { AuthProvider } from "./contexts/AuthContext";
 import type { ReactNode } from "react";
+import { TagList } from "./pages/TagList";
 
 const RequireAuth = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
@@ -31,6 +32,16 @@ function App() {
               <RequireAuth>
                 <Layout>
                   <StudyLogList />
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tags"
+            element={
+              <RequireAuth>
+                <Layout>
+                  <TagList />
                 </Layout>
               </RequireAuth>
             }
