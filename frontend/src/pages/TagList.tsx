@@ -76,15 +76,14 @@ export const TagList = () => {
 
                   {/* ツールチップ */}
                   {tag.description && (
-                    <div className="absolute left-1/2 -translate-x-1/2 top-[120%] z-10
-                                    bg-white/95 text-gray-800 text-sm px-4 py-3 rounded-xl shadow-lg
-                                    border border-gray-300 backdrop-blur-md
-                                    opacity-0 group-hover:opacity-100 transition duration-200
-                                    pointer-events-none">
-
-                      {/* 吹き出しの矢印 */}
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-gray-300 rotate-45" />
-
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 top-[120%] z-10
+                                bg-white/95 text-gray-800 text-sm px-4 py-2 rounded-xl shadow-lg
+                                border border-gray-300 backdrop-blur-md
+                                opacity-0 group-hover:opacity-100 transition duration-200
+                                pointer-events-none
+                                max-w-xs whitespace-nowrap overflow-hidden text-ellipsis"
+                    >
                       {tag.description}
                     </div>
                   )}
