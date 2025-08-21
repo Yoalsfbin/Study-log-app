@@ -1,24 +1,36 @@
 import { useForm } from "react-hook-form";
-import { createTag } from "../../services/tagService";
+import { useEffect } from "react";
+import { createTag, updateTag } from "../../services/tagService";
 import type { TagInput } from "../../services/tagService";
 
 type Props = {
   onCreated: () => void;
+  defaultValues?: TagInput; // 編集時用の初期値
+  isEdit?: boolean;
 };
 
-export const TagForm = ({ onCreated }: Props) => {
+export const TagForm = ({ onCreated, defaultValues, isEdit }: Props) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<TagInput>();
+  } = useForm<TagInput>({
+    defaultValues,
+  });
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
 
   const onSubmit = async (data: TagInput) => {
     console.log("送信データ", data);
     try {
-      await createTag(data);
-      reset();
+      if (data.id) {
+        await updateTag(data.id, data);
+      } else {
+        await createTag(data);
+      }
       onCreated();
     } catch (err) {
       console.error("登録に失敗しました", err);
@@ -34,7 +46,7 @@ export const TagForm = ({ onCreated }: Props) => {
           className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         />
         {errors.name && (
-          <p className="text-red-500 text-sm">{errors.name.message}</p>
+          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
         )}
       </div>
 
@@ -43,6 +55,7 @@ export const TagForm = ({ onCreated }: Props) => {
         <input
           type="color"
           {...register("color")}
+          defaultValue={defaultValues?.color || "#ffffff"}
           className="w-32 h-12 p-1 border border-gray-300 rounded-md cursor-pointer"
         />
       </div>
@@ -67,7 +80,13 @@ export const TagForm = ({ onCreated }: Props) => {
           transform hover:scale-105 transition duration-300 ease-in-out
         `}
       >
-        {isSubmitting ? "登録中..." : "登録"}
+        {isSubmitting
+          ? isEdit
+            ? "更新中..."
+            : "登録中..."
+          : isEdit
+            ? "更新"
+            : "登録"}
       </button>
     </form>
   );
